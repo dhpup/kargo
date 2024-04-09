@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   name: guestbook
 spec:
-  replicas: 2
+  replicas: 1
+  progressDeadlineSeconds: 8
   revisionHistoryLimit: 3
   selector:
     matchLabels:

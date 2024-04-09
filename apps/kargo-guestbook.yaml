@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kargo-guestbook
+spec:
+  project: kargo-demo
+  source:
+    repoURL: https://github.com/dhpup/kargo.git
+    path: kargo
+  destination:
+    server: https://b5bxdj947v9xturb-cplane.kargosvcs.akuity.cloud
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true

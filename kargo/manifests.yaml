@@ -1,0 +1,134 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Project
+metadata:
+  name: guestbook
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec: 
+  promotionPolicies:
+  - stage: test
+    autoPromotionEnabled: true
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: guestbook
+  namespace: guestbook
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+#  labels:
+#    kargo.akuity.io/shard: kargo-agent
+spec:
+  shard: kargo-agent
+  subscriptions:
+  - git:
+      repoURL: https://github.com/dhpup/kargo.git
+      branch: main
+  - image:
+      repoURL: ghcr.io/dhpup/guestbook
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: test
+  namespace: guestbook
+  annotations:
+    kargo.akuity.io/color: purple
+    argocd.argoproj.io/sync-wave: "2"
+  labels:
+    kargo.akuity.io/shard: kargo-agent
+spec:
+  subscriptions:
+    warehouse: guestbook
+  promotionMechanisms:
+    gitRepoUpdates:
+    - repoURL: https://github.com/dhpup/kargo.git
+      writeBranch: stage/test
+      kustomize:
+        images:
+        - image: ghcr.io/dhpup/guestbook
+          path: guestbook/stages/test
+    argoCDAppUpdates:
+    - appName: guestbook-test
+      appNamespace: argocd
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: uat
+  namespace: guestbook
+  annotations:
+    kargo.akuity.io/color: blue
+    argocd.argoproj.io/sync-wave: "2"
+  labels:
+    kargo.akuity.io/shard: kargo-agent
+spec:
+  subscriptions:
+    upstreamStages:
+    - name: test
+  promotionMechanisms:
+    gitRepoUpdates:
+    - repoURL: https://github.com/dhpup/kargo.git
+      writeBranch: stage/uat
+      kustomize:
+        images:
+        - image: ghcr.io/dhpup/guestbook
+          path: guestbook/stages/uat
+    argoCDAppUpdates:
+    - appName: guestbook-uat
+      appNamespace: argocd
+  verification:
+    analysisTemplates:
+    - name: guestbook-verification
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: prod-useast
+  namespace: guestbook
+  annotations:
+    kargo.akuity.io/color: cyan
+    argocd.argoproj.io/sync-wave: "2"
+  labels:
+    kargo.akuity.io/shard: kargo-agent
+spec:
+  subscriptions:
+    upstreamStages:
+    - name: uat
+  promotionMechanisms:
+    gitRepoUpdates:
+    - repoURL: https://github.com/dhpup/kargo.git
+      writeBranch: stage/prod-useast
+      kustomize:
+        images:
+        - image: ghcr.io/dhpup/guestbook
+          path: guestbook/stages/prod-useast
+    argoCDAppUpdates:
+    - appName: guestbook-prod-useast
+      appNamespace: argocd
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: prod-uswest
+  namespace: guestbook
+  annotations:
+    kargo.akuity.io/color: pink
+    argocd.argoproj.io/sync-wave: "2"
+  labels:
+    kargo.akuity.io/shard: kargo-agent
+spec:
+  subscriptions:
+    upstreamStages:
+    - name: uat
+  promotionMechanisms:
+    gitRepoUpdates:
+    - repoURL: https://github.com/dhpup/kargo.git
+      writeBranch: stage/prod-uswest
+      kustomize:
+        images:
+        - image: ghcr.io/dhpup/guestbook
+          path: guestbook/stages/prod-uswest
+    argoCDAppUpdates:
+    - appName: guestbook-prod-uswest
+      appNamespace: argocd

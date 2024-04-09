@@ -16,9 +16,10 @@ metadata:
   namespace: guestbook
   annotations:
     argocd.argoproj.io/sync-wave: "2"
-  labels:
-    kargo.akuity.io/shard: kargo-agent
+#  labels:
+#    kargo.akuity.io/shard: kargo-agent
 spec:
+  shard: kargo-agent
   subscriptions:
   - git:
       repoURL: https://github.com/dhpup/kargo.git

@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
 - ../../base
-- rollout.yaml
 images:
 - name: ghcr.io/dhpup/guestbook
   newTag: 0.1.40

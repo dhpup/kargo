@@ -3,6 +3,17 @@ kind: Kustomization
 
 resources:
 - ../../base
+
+patches:
+- patch: |-
+    $patch: delete
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: DOES NOT MATTER
+  target:
+    kind: Deployment
+    name: guestbook
 images:
 - name: ghcr.io/dhpup/guestbook
   newTag: 0.1.40

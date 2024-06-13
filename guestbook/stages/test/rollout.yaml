@@ -25,3 +25,17 @@ spec:
       steps:
       - setWeight: 50
       - pause: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: preview-guestbook
+spec:
+  ports:
+    - name: https
+      port: 443
+      targetPort: https
+  selector:
+    matchLabels:
+      app: guestbook
+  type: ClusterIP

@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: guestbook
@@ -25,3 +25,16 @@ spec:
       steps:
       - setWeight: 50
       - pause: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: preview-guestbook
+spec:
+  ports:
+    - name: https
+      port: 80
+      targetPort: https
+  selector:
+      app: guestbook
+  type: ClusterIP

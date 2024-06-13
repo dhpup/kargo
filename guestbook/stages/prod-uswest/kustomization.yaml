@@ -2,7 +2,20 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- ../../base
+- rollout.yaml
+
+patches:
+- patch: |
+    $patch: delete
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: DOES NOT MATTER
+  target:
+    kind: Deployment
+    name: guestbook
+resources:
+- rollout.yaml
 images:
 - name: ghcr.io/dhpup/guestbook
-  newTag: 0.1.38
+  newTag: 0.1.40

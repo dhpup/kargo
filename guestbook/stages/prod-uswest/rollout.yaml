@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: Rollout
 metadata:
   name: guestbook
 spec:
@@ -19,3 +19,9 @@ spec:
         name: guestbook
         ports:
         - containerPort: 80
+  strategy:
+    canary:
+      canaryService: preview-guestbook
+      steps:
+      - setWeight: 50
+      - pause: {}

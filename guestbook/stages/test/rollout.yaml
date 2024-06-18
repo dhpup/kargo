@@ -3,7 +3,7 @@ kind: Rollout
 metadata:
   name: guestbook
 spec:
-  replicas: 1
+  replicas: 4
   progressDeadlineSeconds: 3
   revisionHistoryLimit: 3
   selector:
@@ -23,6 +23,8 @@ spec:
     canary:
       canaryService: preview-guestbook
       steps:
+      - setWeight: 25
+      - pause: {duration: 20s}
       - setWeight: 50
       - pause: {}
 ---

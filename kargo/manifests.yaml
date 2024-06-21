@@ -84,6 +84,8 @@ spec:
   verification:
     analysisTemplates:
     - name: guestbook-verification
+    analysisTemplates:
+    - name: guestbook-verification-2
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage

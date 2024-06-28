@@ -24,11 +24,11 @@ spec:
       canaryService: preview-guestbook
       steps:
       - setWeight: 25
-      - pause: {duration: 2s}
+      - pause: {duration: 11s}
       - setWeight: 50
-      - pause: {duration: 2s}
+      - pause: {duration: 11s}
       - setWeight: 75
-      - pause: {duration: 2s}
+      - pause: {duration: 11s}
 ---
 apiVersion: v1
 kind: Service

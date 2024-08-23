@@ -20,8 +20,6 @@ metadata:
   namespace: guestbook
   annotations:
     argocd.argoproj.io/sync-wave: "2"
-#  labels:
-#    kargo.akuity.io/shard: kargo-agent
 spec:
   shard: kargo-agent
   subscriptions:
@@ -37,13 +35,15 @@ metadata:
   name: test
   namespace: guestbook
   annotations:
-    kargo.akuity.io/color: purple
     argocd.argoproj.io/sync-wave: "2"
-  labels:
-    kargo.akuity.io/shard: kargo-agent
 spec:
-  subscriptions:
-    warehouse: guestbook
+  shard: kargo-agent
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: guestbook
+    sources:
+      direct: true
   promotionMechanisms:
     gitRepoUpdates:
     - repoURL: https://github.com/dhpup/kargo.git
@@ -62,14 +62,16 @@ metadata:
   name: uat
   namespace: guestbook
   annotations:
-    kargo.akuity.io/color: blue
     argocd.argoproj.io/sync-wave: "2"
-  labels:
-    kargo.akuity.io/shard: kargo-agent
 spec:
-  subscriptions:
-    upstreamStages:
-    - name: test
+  shard: kargo-agent
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: guestbook
+    sources:
+      stages:
+      - test
   promotionMechanisms:
     gitRepoUpdates:
     - repoURL: https://github.com/dhpup/kargo.git
@@ -92,14 +94,16 @@ metadata:
   name: prod-useast
   namespace: guestbook
   annotations:
-    kargo.akuity.io/color: cyan
     argocd.argoproj.io/sync-wave: "2"
-  labels:
-    kargo.akuity.io/shard: kargo-agent
 spec:
-  subscriptions:
-    upstreamStages:
-    - name: uat
+  shard: kargo-agent
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: guestbook
+    sources:
+      stages:
+      - uat
   promotionMechanisms:
     gitRepoUpdates:
     - repoURL: https://github.com/dhpup/kargo.git
@@ -118,14 +122,16 @@ metadata:
   name: prod-uswest
   namespace: guestbook
   annotations:
-    kargo.akuity.io/color: pink
     argocd.argoproj.io/sync-wave: "2"
-  labels:
-    kargo.akuity.io/shard: kargo-agent
 spec:
-  subscriptions:
-    upstreamStages:
-    - name: uat
+  shard: kargo-agent
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: guestbook
+    sources:
+      stages:
+      - uat
   promotionMechanisms:
     gitRepoUpdates:
     - repoURL: https://github.com/dhpup/kargo.git

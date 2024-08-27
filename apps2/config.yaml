@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: configmap
+spec:
+  project: kargo-demo
+  source:
+    repoURL: 'https://github.com/dhpup/kargo'
+    path: config
+    targetRevision: HEAD
+  destination:
+    namespace: configmap
+    name: 'mac2'
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

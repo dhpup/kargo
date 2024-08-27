@@ -4,3 +4,7 @@ metadata:
   name: example-cm
 data:
   foo: "bar"
+spec:
+  destination:
+    name: mac1
+    namespace: default

@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: configmap
+  name: configmap2
 spec:
   project: kargo-demo
   source:
     repoURL: 'https://github.com/dhpup/kargo'
-    path: config/cm1
+    path: config/cm2
     targetRevision: HEAD
   destination:
     namespace: configmap

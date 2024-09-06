@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: configmap2
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: kargo-demo
+  source:
+    repoURL: 'https://github.com/dhpup/kargo'
+    path: config/cm2
+    targetRevision: HEAD
+  destination:
+    namespace: configmap
+    name: 'mac2'
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true

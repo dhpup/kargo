@@ -17,4 +17,4 @@ patches:
     name: guestbook
 images:
 - name: ghcr.io/dhpup/guestbook
-  newTag: 0.1.36
+  newTag: 0.1.41

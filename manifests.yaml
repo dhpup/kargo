@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   name: guestbook
 spec:
+  progressDeadlineSeconds: 8
   replicas: 1
-  progressDeadlineSeconds: 9
   revisionHistoryLimit: 3
   selector:
     matchLabels:
@@ -15,7 +15,18 @@ spec:
         app: guestbook
     spec:
       containers:
-      - image: ghcr.io/dhpup/guestbook
+      - image: ghcr.io/dhpup/guestbook:0.1.32
         name: guestbook
         ports:
         - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: guestbook
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: guestbook

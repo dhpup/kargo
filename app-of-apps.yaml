@@ -7,7 +7,7 @@ spec:
   syncPolicy:
     automated: {}
   source:
-    repoURL: https://github.com/emilyxinyi/kargo.git
+    repoURL: https://github.com/dhpup/kargo.git
     targetRevision: main
     path: apps
     directory:

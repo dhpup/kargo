@@ -19,7 +19,7 @@ spec:
     spec:
       project: kargo-demo
       source:
-        repoURL: https://github.com/emilyxinyi/kargo.git
+        repoURL: https://github.com/dhpup/kargo.git
         targetRevision: stage/{{stage}}
         path: ./
       destination:

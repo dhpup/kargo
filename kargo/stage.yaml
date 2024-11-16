@@ -18,7 +18,7 @@ spec:
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/emilyxinyi/kargo.git
+          repoURL: https://github.com/dhpup/kargo.git
           checkout:
           - branch: main
             path: ./src
@@ -53,7 +53,7 @@ spec:
           apps:
           - name: guestbook-test
             sources:
-            - repoURL: https://github.com/emilyxinyi/kargo.git
+            - repoURL: https://github.com/dhpup/kargo.git
               desiredCommitFromStep: commit
 ---
 apiVersion: kargo.akuity.io/v1alpha1
@@ -77,7 +77,7 @@ spec:
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/emilyxinyi/kargo.git
+          repoURL: https://github.com/dhpup/kargo.git
           checkout:
           - branch: main
             path: ./src
@@ -112,7 +112,7 @@ spec:
           apps:
           - name: guestbook-uat
             sources:
-            - repoURL: https://github.com/emilyxinyi/kargo.git
+            - repoURL: https://github.com/dhpup/kargo.git
               desiredCommitFromStep: commit
   verification:
     analysisTemplates:
@@ -139,7 +139,7 @@ spec:
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/emilyxinyi/kargo.git
+          repoURL: https://github.com/dhpup/kargo.git
           checkout:
           - branch: main
             path: ./src
@@ -174,7 +174,7 @@ spec:
           apps:
           - name: guestbook-prod-useast
             sources:
-            - repoURL: https://github.com/emilyxinyi/kargo.git
+            - repoURL: https://github.com/dhpup/kargo.git
               desiredCommitFromStep: commit
 ---
 apiVersion: kargo.akuity.io/v1alpha1
@@ -198,7 +198,7 @@ spec:
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/emilyxinyi/kargo.git
+          repoURL: https://github.com/dhpup/kargo.git
           checkout:
           - branch: main
             path: ./src
@@ -233,5 +233,5 @@ spec:
           apps:
           - name: guestbook-prod-uswest
             sources:
-            - repoURL: https://github.com/emilyxinyi/kargo.git
+            - repoURL: https://github.com/dhpup/kargo.git
               desiredCommitFromStep: commit

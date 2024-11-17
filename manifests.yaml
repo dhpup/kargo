@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: guestbook
 spec:
-  progressDeadlineSeconds: 8
+  progressDeadlineSeconds: 5
   replicas: 1
   revisionHistoryLimit: 3
   selector:

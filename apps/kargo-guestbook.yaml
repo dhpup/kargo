@@ -10,6 +10,7 @@ spec:
   destination:
 #    server: https://b5bxdj947v9xturb-cplane.kargosvcs.akuity.cloud
     name: kargo-dan
+    namespace: argocd
   syncPolicy:
     syncOptions:
     - CreateNamespace=true

@@ -8,7 +8,8 @@ spec:
     repoURL: https://github.com/dhpup/kargo.git
     path: kargo
   destination:
-    server: https://b5bxdj947v9xturb-cplane.kargosvcs.akuity.cloud
+#    server: https://b5bxdj947v9xturb-cplane.kargosvcs.akuity.cloud
+    name: kargo-dan
   syncPolicy:
     syncOptions:
     - CreateNamespace=true

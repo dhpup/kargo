@@ -176,6 +176,17 @@ spec:
             sources:
             - repoURL: https://github.com/dhpup/kargo.git
               desiredCommitFromStep: commit
+      - uses: http
+        config:
+          method: POST
+          url: https://api.github.com/repos/dhpup/github-action/actions/workflows/always-succeed.yaml/dispatches
+          headers:
+          - name: Authorization
+            value: Bearer ${{ secrets.GITHUB_PAT }}
+          - name: X-GitHub-Api-Version
+            value: 2022-11-28
+          - name: Accept
+            value: application/vnd.github+json
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage

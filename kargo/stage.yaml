@@ -179,7 +179,7 @@ spec:
       - uses: http
         config:
           method: POST
-          url: https://api.github.com/repos/dhpup/github-action/actions/workflows/always-succeed.yaml/dispatches
+          url: https://api.github.com/repos/dhpup/github-action/.actions/workflows/always-succeed.yaml/dispatches
           headers:
           - name: Authorization
             value: Bearer ${{ secrets.GITHUB_PAT }}

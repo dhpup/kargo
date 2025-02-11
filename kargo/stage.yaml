@@ -178,7 +178,7 @@ spec:
               desiredCommitFromStep: commit
       - uses: compose-output
         config:
-          output: ${{ secrets.github-pat.GITHUB_PAT }}
+          output: ${{ secrets.GITHUB_PAT }}
       - uses: http
         config:
           method: POST

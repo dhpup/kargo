@@ -177,8 +177,8 @@ spec:
             - repoURL: https://github.com/dhpup/kargo.git
               desiredCommitFromStep: commit
       - uses: compose-output
-              config:
-                output: ${{ secrets.github-pat.GITHUB_PAT }}
+        config:
+          output: ${{ secrets.github-pat.GITHUB_PAT }}
       - uses: http
         config:
           method: POST

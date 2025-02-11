@@ -191,7 +191,9 @@ spec:
           - name: Accept
             value: application/vnd.github+json
           body: |
-            ${{ quote({"ref":"main"}) }}
+            ${{ quote({
+              "ref":"main"
+              }) }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage

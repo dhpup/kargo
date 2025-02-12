@@ -185,15 +185,13 @@ spec:
           url: https://api.github.com/repos/dhpup/github-action/actions/workflows/always-succeed.yaml/dispatches
           headers:
           - name: Authorization
-            value: Bearer ${{ secrets.gh-pat.gh-token }}
+            value: Bearer ${{ secrets.github.token }}
           - name: X-GitHub-Api-Version
             value: 2022-11-28
           - name: Accept
             value: application/vnd.github+json
-#          - name: Content-Type
-#            value: application/json
           body: |
-            {"ref": "main"}
+            ${{ quote({"ref":"main"}) }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage

@@ -15,10 +15,15 @@ spec:
       direct: true
   promotionTemplate:
     spec:
+      vars:
+      - name: gitRepo
+        value: https://github.com/dhpup/kargo.git
+      - name: imageRepo
+        value: ghcr.io/dhpup/guestbook
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/dhpup/kargo.git
+          repoURL: ${{ vars.gitRepo }}
           checkout:
           - branch: main
             path: ./src
@@ -54,7 +59,7 @@ spec:
           - name: guestbook-test
             sources:
             - repoURL: https://github.com/dhpup/kargo.git
-              desiredCommitFromStep: commit
+              desiredRevision: ${{ outputs.commit.commit }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage

@@ -38,7 +38,8 @@ spec:
         config:
           path: ./src/guestbook/stages/test
           images:
-          - image: ghcr.io/dhpup/guestbook
+          - image: ${{ vars.imageRepo }}
+            tag: ${{ imageFrom(vars.imageRepo).Tag }}
       - uses: kustomize-build
         config:
           path: ./src/guestbook/stages/test

@@ -59,7 +59,7 @@ spec:
           apps:
           - name: guestbook-test
             sources:
-            - repoURL: https://github.com/dhpup/kargo.git
+            - repoURL: ${{ vars.gitRepo }}
               desiredRevision: ${{ outputs.commit.commit }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
@@ -80,10 +80,15 @@ spec:
       - test
   promotionTemplate:
     spec:
+      vars:
+      - name: gitRepo
+        value: https://github.com/dhpup/kargo.git
+      - name: imageRepo
+        value: ghcr.io/dhpup/guestbook
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/dhpup/kargo.git
+          repoURL: ${{ vars.gitRepo }}
           checkout:
           - branch: main
             path: ./src
@@ -98,7 +103,8 @@ spec:
         config:
           path: ./src/guestbook/base
           images:
-          - image: ghcr.io/dhpup/guestbook
+          - image: ${{ vars.imageRepo }}
+            tag: ${{ imageFrom(vars.imageRepo).Tag }}
       - uses: kustomize-build
         config:
           path: ./src/guestbook/stages/uat
@@ -118,8 +124,8 @@ spec:
           apps:
           - name: guestbook-uat
             sources:
-            - repoURL: https://github.com/dhpup/kargo.git
-              desiredCommitFromStep: commit
+            - repoURL: ${{ vars.gitRepo }}
+              desiredRevision: ${{ outputs.commit.commit }}
   verification:
     analysisTemplates:
     - name: guestbook-verification-3
@@ -142,10 +148,15 @@ spec:
       - uat
   promotionTemplate:
     spec:
+      vars:
+      - name: gitRepo
+        value: https://github.com/dhpup/kargo.git
+      - name: imageRepo
+        value: ghcr.io/dhpup/guestbook
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/dhpup/kargo.git
+          repoURL: ${{ vars.gitRepo }}
           checkout:
           - branch: main
             path: ./src
@@ -160,7 +171,8 @@ spec:
         config:
           path: ./src/guestbook/base
           images:
-          - image: ghcr.io/dhpup/guestbook
+          - image: ${{ vars.imageRepo }}
+            tag: ${{ imageFrom(vars.imageRepo).Tag }}
       - uses: kustomize-build
         config:
           path: ./src/guestbook/stages/prod-useast
@@ -180,24 +192,24 @@ spec:
           apps:
           - name: guestbook-prod-useast
             sources:
-            - repoURL: https://github.com/dhpup/kargo.git
-              desiredCommitFromStep: commit
+            - repoURL: ${{ vars.gitRepo }}
+              desiredRevision: ${{ outputs.commit.commit }}
       # - uses: compose-output
       #   config:
       #     output: ${{ secrets.GITHUB_PAT }}
-      - uses: http
-        config:
-          method: POST
-          url: https://api.github.com/repos/dhpup/github-action/actions/workflows/always-succeed.yaml/dispatches
-          headers:
-          - name: Authorization
-            value: Bearer ${{ secrets.github.token }}
-          - name: X-GitHub-Api-Version
-            value: 2022-11-28
-          - name: Accept
-            value: application/vnd.github+json
-          body: |
-            ${{ quote({"ref":"main"}) }}
+      # - uses: http
+      #   config:
+      #     method: POST
+      #     url: https://api.github.com/repos/dhpup/github-action/actions/workflows/always-succeed.yaml/dispatches
+      #     headers:
+      #     - name: Authorization
+      #       value: Bearer ${{ secrets.github.token }}
+      #     - name: X-GitHub-Api-Version
+      #       value: 2022-11-28
+      #     - name: Accept
+      #       value: application/vnd.github+json
+      #     body: |
+      #       ${{ quote({"ref":"main"}) }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
@@ -217,10 +229,15 @@ spec:
       - uat
   promotionTemplate:
     spec:
+      vars:
+      - name: gitRepo
+        value: https://github.com/dhpup/kargo.git
+      - name: imageRepo
+        value: ghcr.io/dhpup/guestbook
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/dhpup/kargo.git
+          repoURL: ${{ vars.gitRepo }}
           checkout:
           - branch: main
             path: ./src
@@ -235,7 +252,8 @@ spec:
         config:
           path: ./src/guestbook/base
           images:
-          - image: ghcr.io/dhpup/guestbook
+          - image: ${{ vars.imageRepo }}
+            tag: ${{ imageFrom(vars.imageRepo).Tag }}
       - uses: kustomize-build
         config:
           path: ./src/guestbook/stages/prod-useast
@@ -255,5 +273,5 @@ spec:
           apps:
           - name: guestbook-prod-uswest
             sources:
-            - repoURL: https://github.com/dhpup/kargo.git
-              desiredCommitFromStep: commit
+            - repoURL: ${{ vars.gitRepo }}
+              desiredRevision: ${{ outputs.commit.commit }}

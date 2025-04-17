@@ -263,7 +263,7 @@ spec:
             tag: ${{ imageFrom(vars.imageRepo).Tag }}
       - uses: kustomize-build
         config:
-          path: ./src/guestbook/stages/prod-useast
+          path: ./src/guestbook/stages/prod-uswest
           outPath: ./out/manifests.yaml
       - uses: git-commit
         as: commit

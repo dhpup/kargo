@@ -257,7 +257,7 @@ spec:
       - uses: kustomize-set-image
         as: update-image
         config:
-          path: ./src/guestbook/stages/uswest
+          path: ./src/guestbook/stages/prod-uswest
           images:
           - image: ${{ vars.imageRepo }}
             tag: ${{ imageFrom(vars.imageRepo).Tag }}

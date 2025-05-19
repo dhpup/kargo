@@ -181,8 +181,7 @@ spec:
         as: commit
         config:
           path: ./out
-          messageFromSteps:
-          - update-image
+          message: \${{ outputs.update-image.commitMessage }}
       - uses: git-push
         config:
           path: ./out
@@ -194,13 +193,13 @@ spec:
             sources:
             - repoURL: ${{ vars.gitRepo }}
               desiredRevision: ${{ outputs.commit.commit }}
-      - uses: compose-output
-        as: tags
-        config:
-          repo2: ${{ vars.gitRepo }}
-      - uses: compose-output
-        config:
-          output: ${{ outputs.tags.repo2 }}
+      # - uses: compose-output
+      #   as: tags
+      #   config:
+      #     repo2: ${{ vars.gitRepo }}
+      # - uses: compose-output
+      #   config:
+      #     output: ${{ outputs.tags.repo2 }}
       # - uses: compose-output
       #   config:
       #     output: ${{ secrets.GITHUB_PAT }}

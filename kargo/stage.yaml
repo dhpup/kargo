@@ -34,7 +34,7 @@ spec:
         config:
           path: ./out
       - uses: kustomize-set-image
-        as: update-image
+        as: update
         config:
           path: ./src/guestbook/stages/test
           images:
@@ -48,8 +48,7 @@ spec:
         as: commit
         config:
           path: ./out
-          messageFromSteps:
-          - update-image
+          message: ${{ outputs.update.commitMessage }}
       - uses: git-push
         config:
           path: ./out
@@ -99,7 +98,7 @@ spec:
         config:
           path: ./out
       - uses: kustomize-set-image
-        as: update-image
+        as: update
         config:
           path: ./src/guestbook/base
           images:
@@ -113,8 +112,7 @@ spec:
         as: commit
         config:
           path: ./out
-          messageFromSteps:
-          - update-image
+          message: ${{ outputs.update.commitMessage }}
       - uses: git-push
         config:
           path: ./out
@@ -167,7 +165,7 @@ spec:
         config:
           path: ./out
       - uses: kustomize-set-image
-        as: update-image
+        as: update
         config:
           path: ./src/guestbook/base
           images:
@@ -181,7 +179,7 @@ spec:
         as: commit
         config:
           path: ./out
-          message: ${{ outputs['update-image'].commitMessage }}
+          message: ${{ outputs.update.commitMessage }}
       - uses: git-push
         config:
           path: ./out
@@ -254,7 +252,7 @@ spec:
         config:
           path: ./out
       - uses: kustomize-set-image
-        as: update-image
+        as: update
         config:
           path: ./src/guestbook/stages/prod-uswest
           images:
@@ -268,8 +266,7 @@ spec:
         as: commit
         config:
           path: ./out
-          messageFromSteps:
-          - update-image
+          message: ${{ outputs.update.commitMessage }}
       - uses: git-push
         config:
           path: ./out

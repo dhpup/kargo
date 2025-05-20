@@ -181,6 +181,7 @@ spec:
           path: ./out
           message: ${{ outputs.update.commitMessage }}
       - uses: git-push
+        as: push
         config:
           path: ./out
           generateTargetBranch: true

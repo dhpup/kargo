@@ -204,8 +204,8 @@ spec:
           apps:
           - name: guestbook-prod-useast
             sources:
-            - repoURL: ${{ vars.gitRepo }}
-              desiredRevision: ${{ outputs.commit.commit }}
+            - repoURL: https://github.com/dhpup/kargo.git
+              desiredRevision: ${{ outputs['wait-for-pr'].commit }}
       # - uses: compose-output
       #   as: tags
       #   config:

@@ -60,6 +60,17 @@ spec:
             sources:
             - repoURL: ${{ vars.gitRepo }}
               desiredRevision: ${{ outputs.commit.commit }}
+      - uses: compose-output
+        as: tags
+        config:
+          repo2: ${{ vars.gitRepo }}
+      - uses: compose-output
+        config:
+          output: ${{ outputs.tags.repo2 }}
+      - uses: compose-output
+        as:imageandtag
+        config:
+          output: ${{ vars.imageRepo }}/${{ imageFrom(vars.imageRepo).Tag }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage

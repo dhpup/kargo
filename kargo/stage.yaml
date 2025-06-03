@@ -68,7 +68,7 @@ spec:
         config:
           output: ${{ outputs.tags.repo2 }}
       - uses: compose-output
-        as:imageandtag
+        as: imageandtag
         config:
           output: ${{ vars.imageRepo }}/${{ imageFrom(vars.imageRepo).Tag }}
 ---

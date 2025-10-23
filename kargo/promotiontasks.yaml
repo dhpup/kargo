@@ -31,7 +31,7 @@ spec:
   # Update the image tag in the Kustomize configuration for this stage
   # Uses the image tag from the freight being promoted
   - uses: kustomize-set-image
-    as: update
+    as: update-image
     config:
       path: ./src/guestbook/stages/${{ ctx.stage }}
       images:
@@ -48,7 +48,7 @@ spec:
   - uses: git-commit
     config:
       path: ./out
-      message: ${{ outputs.update.commitMessage }}
+      message: ${{ outputs['update-image'].commitMessage }}
   # Push the commit to the remote stage branch
   - uses: git-push
     as: push
@@ -98,7 +98,7 @@ spec:
   # Update the image tag in the Kustomize configuration for this stage
   # Uses the image tag from the freight being promoted
   - uses: kustomize-set-image
-    as: update
+    as: update-image
     config:
       path: ./src/guestbook/base
       images:
@@ -115,7 +115,7 @@ spec:
   - uses: git-commit
     config:
       path: ./out
-      message: ${{ outputs.update.commitMessage }}
+      message: ${{ outputs['update-image'].commitMessage }}
   # Push the commit to a new automatically-generated branch
   # This branch will be used as the source for the PR
   - uses: git-push

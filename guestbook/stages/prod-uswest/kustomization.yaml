@@ -5,6 +5,10 @@ resources:
 - ../../base
 - rollout.yaml
 
+images:
+- name: ghcr.io/dhpup/guestbook
+  newTag: latest
+
 patches:
   - target:
       kind: Deployment

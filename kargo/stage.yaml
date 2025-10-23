@@ -43,9 +43,9 @@ spec:
   verification:
     analysisTemplates:
     - name: pokemon-xp
-      args:
-      - name: pokemon
-        value: pikachu
+    args:
+    - name: pokemon
+      value: pikachu
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage

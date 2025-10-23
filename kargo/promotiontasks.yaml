@@ -131,7 +131,7 @@ spec:
     config:
       repoURL: ${{ vars.gitRepo }}
       createTargetBranch: true
-      sourceBranch: ${{ outputs['push'].branch }}
+      sourceBranch: ${{ task.outputs['push'].branch }}
       targetBranch: stage/${{ ctx.stage }}
   # Wait for the pull request to be merged before proceeding
   # Blocks the promotion until manual approval is complete
@@ -139,7 +139,7 @@ spec:
     as: wait-for-pr
     config:
       repoURL: ${{ vars.gitRepo }}
-      prNumber: ${{ outputs['openpr'].pr.id }}
+      prNumber: ${{ task.outputs['openpr'].pr.id }}
   # Trigger ArgoCD to refresh and sync the application
   - uses: argocd-update
     config:

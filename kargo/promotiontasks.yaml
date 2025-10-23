@@ -127,7 +127,7 @@ spec:
   # This allows for manual review before deploying to production
   # The source branch follows Kargo's pattern: kargo/promotion/<promotionName>
   - uses: git-open-pr
-    as: open-pr
+    as: openpr
     config:
       repoURL: ${{ vars.gitRepo }}
       createTargetBranch: true
@@ -139,7 +139,7 @@ spec:
     as: wait-for-pr
     config:
       repoURL: ${{ vars.gitRepo }}
-      prNumber: ${{ outputs.open-pr.pr.id }}
+      prNumber: ${{ outputs.openpr.pr.id }}
   # Trigger ArgoCD to refresh and sync the application
   - uses: argocd-update
     config:

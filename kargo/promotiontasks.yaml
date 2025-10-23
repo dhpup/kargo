@@ -58,15 +58,11 @@ spec:
     config:
       path: ./out
       targetBranch: stage/${{ ctx.stage }}
-  # Trigger ArgoCD to sync the application with the new commit
-  # This deploys the updated manifests to the cluster
+  # Trigger ArgoCD to refresh and sync the application
   - uses: argocd-update
     config:
       apps:
       - name: guestbook-${{ ctx.stage }}
-        sources:
-        - repoURL: ${{ vars.gitRepo }}
-          desiredRevision: stage/${{ ctx.stage }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionTask
@@ -143,12 +139,8 @@ spec:
     config:
       repoURL: ${{ vars.gitRepo }}
       prNumber: ${{ outputs['open-pr'].prNumber }}
-  # Trigger ArgoCD to sync the application with the merged PR commit
-  # This deploys the approved manifests to the cluster
+  # Trigger ArgoCD to refresh and sync the application
   - uses: argocd-update
     config:
       apps:
       - name: guestbook-${{ ctx.stage }}
-        sources:
-        - repoURL: ${{ vars.gitRepo }}
-          desiredRevision: stage/${{ ctx.stage }}

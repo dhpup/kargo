@@ -15,62 +15,9 @@ spec:
       direct: true
   promotionTemplate:
     spec:
-      vars:
-      - name: gitRepo
-        value: https://github.com/dhpup/kargo.git
-      - name: imageRepo
-        value: ghcr.io/dhpup/guestbook
       steps:
-      - uses: git-clone
-        config:
-          repoURL: ${{ vars.gitRepo }}
-          checkout:
-          - branch: main
-            path: ./src
-          - branch: stage/test
-            create: true
-            path: ./out
-      - uses: git-clear
-        config:
-          path: ./out
-      - uses: kustomize-set-image
-        as: update
-        config:
-          path: ./src/guestbook/stages/test
-          images:
-          - image: ${{ vars.imageRepo }}
-            tag: ${{ imageFrom(vars.imageRepo).Tag }}
-      - uses: kustomize-build
-        config:
-          path: ./src/guestbook/stages/test
-          outPath: ./out/manifests.yaml
-      - uses: git-commit
-        as: commit
-        config:
-          path: ./out
-          message: ${{ outputs.update.commitMessage }}
-      - uses: git-push
-        config:
-          path: ./out
-          targetBranch: stage/test
-      - uses: argocd-update
-        config:
-          apps:
-          - name: guestbook-test
-            sources:
-            - repoURL: ${{ vars.gitRepo }}
-              desiredRevision: ${{ outputs.commit.commit }}
-      - uses: compose-output
-        as: tags
-        config:
-          repo2: ${{ vars.gitRepo }}
-      - uses: compose-output
-        config:
-          output: ${{ outputs.tags.repo2 }}
-      - uses: compose-output
-        as: imageandtag
-        config:
-          output: ${{ vars.imageRepo }}/${{ imageFrom(vars.imageRepo).Tag }}
+      - task:
+          name: promote-standard
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
@@ -90,51 +37,9 @@ spec:
       - test
   promotionTemplate:
     spec:
-      vars:
-      - name: gitRepo
-        value: https://github.com/dhpup/kargo.git
-      - name: imageRepo
-        value: ghcr.io/dhpup/guestbook
       steps:
-      - uses: git-clone
-        config:
-          repoURL: ${{ vars.gitRepo }}
-          checkout:
-          - branch: main
-            path: ./src
-          - branch: stage/uat
-            create: true
-            path: ./out
-      - uses: git-clear
-        config:
-          path: ./out
-      - uses: kustomize-set-image
-        as: update
-        config:
-          path: ./src/guestbook/base
-          images:
-          - image: ${{ vars.imageRepo }}
-            tag: ${{ imageFrom(vars.imageRepo).Tag }}
-      - uses: kustomize-build
-        config:
-          path: ./src/guestbook/stages/uat
-          outPath: ./out/manifests.yaml
-      - uses: git-commit
-        as: commit
-        config:
-          path: ./out
-          message: ${{ outputs.update.commitMessage }}
-      - uses: git-push
-        config:
-          path: ./out
-          targetBranch: stage/uat
-      - uses: argocd-update
-        config:
-          apps:
-          - name: guestbook-uat
-            sources:
-            - repoURL: ${{ vars.gitRepo }}
-              desiredRevision: ${{ outputs.commit.commit }}
+      - task:
+          name: promote-standard
   verification:
     analysisTemplates:
     - name: guestbook-verification-3
@@ -157,89 +62,9 @@ spec:
       - uat
   promotionTemplate:
     spec:
-      vars:
-      - name: gitRepo
-        value: https://github.com/dhpup/kargo.git
-      - name: imageRepo
-        value: ghcr.io/dhpup/guestbook
       steps:
-      - uses: git-clone
-        config:
-          repoURL: ${{ vars.gitRepo }}
-          checkout:
-          - branch: main
-            path: ./src
-          - branch: stage/prod-useast
-            create: true
-            path: ./out
-      - uses: git-clear
-        config:
-          path: ./out
-      - uses: kustomize-set-image
-        as: update
-        config:
-          path: ./src/guestbook/base
-          images:
-          - image: ${{ vars.imageRepo }}
-            tag: ${{ imageFrom(vars.imageRepo).Tag }}
-      - uses: kustomize-build
-        config:
-          path: ./src/guestbook/stages/prod-useast
-          outPath: ./out/manifests.yaml
-      - uses: git-commit
-        as: commit
-        config:
-          path: ./out
-          message: ${{ outputs.update.commitMessage }}
-      - uses: git-push
-        as: push
-        config:
-          path: ./out
-          generateTargetBranch: true
-          # targetBranch: stage/prod-useast
-      - uses: git-open-pr
-        as: open-pr
-        config:
-          repoURL: https://github.com/dhpup/kargo.git
-          createTargetBranch: true
-          sourceBranch: ${{ outputs.push.branch }}
-          # targetBranch: stage/${{ ctx.stage }}
-          targetBranch: stage/prod-useast
-      - uses: git-wait-for-pr
-        as: wait-for-pr
-        config:
-          repoURL: https://github.com/dhpup/kargo.git
-          prNumber: ${{ outputs['open-pr'].prNumber }}
-      - uses: argocd-update
-        config:
-          apps:
-          - name: guestbook-prod-useast
-            sources:
-            - repoURL: https://github.com/dhpup/kargo.git
-              desiredRevision: ${{ outputs['wait-for-pr'].commit }}
-      # - uses: compose-output
-      #   as: tags
-      #   config:
-      #     repo2: ${{ vars.gitRepo }}
-      # - uses: compose-output
-      #   config:
-      #     output: ${{ outputs.tags.repo2 }}
-      # - uses: compose-output
-      #   config:
-      #     output: ${{ secrets.GITHUB_PAT }}
-      # - uses: http
-      #   config:
-      #     method: POST
-      #     url: https://api.github.com/repos/dhpup/github-action/actions/workflows/always-succeed.yaml/dispatches
-      #     headers:
-      #     - name: Authorization
-      #       value: Bearer ${{ secrets.github.token }}
-      #     - name: X-GitHub-Api-Version
-      #       value: 2022-11-28
-      #     - name: Accept
-      #       value: application/vnd.github+json
-      #     body: |
-      #       ${{ quote({"ref":"main"}) }}
+      - task:
+          name: promote-with-pr
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
@@ -259,48 +84,6 @@ spec:
       - uat
   promotionTemplate:
     spec:
-      vars:
-      - name: gitRepo
-        value: https://github.com/dhpup/kargo.git
-      - name: imageRepo
-        value: ghcr.io/dhpup/guestbook
       steps:
-      - uses: git-clone
-        config:
-          repoURL: ${{ vars.gitRepo }}
-          checkout:
-          - branch: main
-            path: ./src
-          - branch: stage/prod-uswest
-            create: true
-            path: ./out
-      - uses: git-clear
-        config:
-          path: ./out
-      - uses: kustomize-set-image
-        as: update
-        config:
-          path: ./src/guestbook/stages/prod-uswest
-          images:
-          - image: ${{ vars.imageRepo }}
-            tag: ${{ imageFrom(vars.imageRepo).Tag }}
-      - uses: kustomize-build
-        config:
-          path: ./src/guestbook/stages/prod-uswest
-          outPath: ./out/manifests.yaml
-      - uses: git-commit
-        as: commit
-        config:
-          path: ./out
-          message: ${{ outputs.update.commitMessage }}
-      - uses: git-push
-        config:
-          path: ./out
-          targetBranch: stage/prod-uswest
-      - uses: argocd-update
-        config:
-          apps:
-          - name: guestbook-prod-uswest
-            sources:
-            - repoURL: ${{ vars.gitRepo }}
-              desiredRevision: ${{ outputs.commit.commit }}
+      - task:
+          name: promote-standard

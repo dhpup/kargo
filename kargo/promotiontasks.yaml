@@ -123,19 +123,15 @@ spec:
     config:
       path: ./out
       generateTargetBranch: true
-  # Create a variable with the generated branch name for the PR
-  - uses: compose-output
-    as: pr-branch
-    config:
-      branch: kargo/promotion/${{ ctx.promotion }}
   # Open a pull request from the generated branch to the stage branch
   # This allows for manual review before deploying to production
+  # The source branch follows Kargo's pattern: kargo/promotion/<promotionName>
   - uses: git-open-pr
     as: open-pr
     config:
       repoURL: ${{ vars.gitRepo }}
       createTargetBranch: true
-      sourceBranch: ${{ outputs['pr-branch'].branch }}
+      sourceBranch: kargo/promotion/${{ ctx.promotion }}
       targetBranch: stage/${{ ctx.stage }}
   # Wait for the pull request to be merged before proceeding
   # Blocks the promotion until manual approval is complete

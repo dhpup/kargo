@@ -46,12 +46,12 @@ spec:
   # Commit the rendered manifests to the stage branch
   # Uses a descriptive commit message with the image tag being promoted
   - uses: git-commit
+    as: commit
     config:
       path: ./out
       message: "Promote ${{ ctx.stage }} to ${{ imageFrom(vars.imageRepo).Tag }}"
   # Push the commit to the remote stage branch
   - uses: git-push
-    as: push
     config:
       path: ./out
       targetBranch: stage/${{ ctx.stage }}
@@ -63,7 +63,7 @@ spec:
       - name: guestbook-${{ ctx.stage }}
         sources:
         - repoURL: ${{ vars.gitRepo }}
-          desiredRevision: ${{ outputs['push'].commit }}
+          desiredRevision: ${{ outputs['commit'].commit }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionTask
@@ -113,6 +113,7 @@ spec:
   # Commit the rendered manifests to a temporary branch
   # Uses a descriptive commit message with the image tag being promoted
   - uses: git-commit
+    as: commit
     config:
       path: ./out
       message: "Promote ${{ ctx.stage }} to ${{ imageFrom(vars.imageRepo).Tag }}"
@@ -130,7 +131,7 @@ spec:
     config:
       repoURL: ${{ vars.gitRepo }}
       createTargetBranch: true
-      sourceBranch: ${{ outputs.push.branch }}
+      sourceBranch: ${{ outputs['push'].branch }}
       targetBranch: stage/${{ ctx.stage }}
   # Wait for the pull request to be merged before proceeding
   # Blocks the promotion until manual approval is complete

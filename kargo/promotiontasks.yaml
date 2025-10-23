@@ -139,7 +139,7 @@ spec:
     as: wait-for-pr
     config:
       repoURL: ${{ vars.gitRepo }}
-      prNumber: ${{ outputs['open-pr'].pr.id }}
+      prNumber: ${{ outputs.open-pr.pr.id }}
   # Trigger ArgoCD to refresh and sync the application
   - uses: argocd-update
     config:

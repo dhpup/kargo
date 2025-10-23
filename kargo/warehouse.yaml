@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
-  shard: kargo-agent
+  # shard: kargo-agent
   subscriptions:
   - git:
       repoURL: https://github.com/dhpup/kargo.git

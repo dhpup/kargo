@@ -130,7 +130,7 @@ spec:
     config:
       repoURL: ${{ vars.gitRepo }}
       createTargetBranch: true
-      sourceBranch: ${{ outputs['push'].branch }}
+      sourceBranch: ${{ outputs.push.branch }}
       targetBranch: stage/${{ ctx.stage }}
   # Wait for the pull request to be merged before proceeding
   # Blocks the promotion until manual approval is complete

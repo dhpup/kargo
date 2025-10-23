@@ -21,10 +21,13 @@ spec:
       source:
         repoURL: https://github.com/dhpup/kargo.git
         targetRevision: stage/{{stage}}
-        path: ./
+        path: .
       destination:
         name: mac1
         namespace: guestbook-{{stage}}
       syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
         syncOptions:
         - CreateNamespace=true

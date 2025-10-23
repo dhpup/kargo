@@ -54,6 +54,7 @@ spec:
       message: "Promote ${{ ctx.stage }} to ${{ imageFrom(vars.imageRepo).Tag }}"
   # Push the commit to the remote stage branch
   - uses: git-push
+    as: push
     config:
       path: ./out
       targetBranch: stage/${{ ctx.stage }}
@@ -65,7 +66,7 @@ spec:
       - name: guestbook-${{ ctx.stage }}
         sources:
         - repoURL: ${{ vars.gitRepo }}
-          desiredRevision: ${{ outputs['clone'].commits.out }}
+          desiredRevision: stage/${{ ctx.stage }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionTask

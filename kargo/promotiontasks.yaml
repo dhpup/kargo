@@ -44,11 +44,11 @@ spec:
       path: ./src/guestbook/stages/${{ ctx.stage }}
       outPath: ./out/manifests.yaml
   # Commit the rendered manifests to the stage branch
-  # Uses the commit message from the image update step
+  # Uses a descriptive commit message with the image tag being promoted
   - uses: git-commit
     config:
       path: ./out
-      message: "${{ ctx.stage }}: ${{ outputs['update-image'].commitMessage }}"
+      message: "Promote ${{ ctx.stage }} to ${{ imageFrom(vars.imageRepo).Tag }}"
   # Push the commit to the remote stage branch
   - uses: git-push
     as: push
@@ -111,11 +111,11 @@ spec:
       path: ./src/guestbook/stages/${{ ctx.stage }}
       outPath: ./out/manifests.yaml
   # Commit the rendered manifests to a temporary branch
-  # Uses the commit message from the image update step
+  # Uses a descriptive commit message with the image tag being promoted
   - uses: git-commit
     config:
       path: ./out
-      message: "${{ ctx.stage }}: ${{ outputs['update-image'].commitMessage }}"
+      message: "Promote ${{ ctx.stage }} to ${{ imageFrom(vars.imageRepo).Tag }}"
   # Push the commit to a new automatically-generated branch
   # This branch will be used as the source for the PR
   - uses: git-push

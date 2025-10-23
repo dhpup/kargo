@@ -151,4 +151,4 @@ spec:
       - name: guestbook-${{ ctx.stage }}
         sources:
         - repoURL: ${{ vars.gitRepo }}
-          desiredRevision: ${{ outputs['wait-for-pr'].commit }}
+          desiredRevision: stage/${{ ctx.stage }}

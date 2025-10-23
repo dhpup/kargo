@@ -26,8 +26,5 @@ spec:
         name: mac1
         namespace: guestbook-{{stage}}
       syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
         syncOptions:
         - CreateNamespace=true

@@ -214,8 +214,7 @@ spec:
     as: dispatch-github-action
     config:
       credentials:
-        # secretName: ${{ vars.githubtoken }}
-        secretName: githubtoken
+        secretName: ${{ vars.githubtoken }}
       owner: dhpup
       repo: kargo
       workflowFile: example-github-action.yml
@@ -231,7 +230,7 @@ spec:
         secretName: ${{ vars.githubtoken }}
       owner: dhpup
       repo: kargo
-      workflowId: ${{ task.outputs['dispatch-github-action'].workflowId }}
+      runID: ${{ task.outputs['dispatch-github-action'].runID }}
   # Trigger ArgoCD to refresh and sync the application
   - uses: argocd-update
     config:

@@ -213,7 +213,7 @@ spec:
   - uses: gha-dispatch-workflow
     as: dispatch-github-action
     config:
-      credentials: 
+      credentials:
         secretName: ${{ vars.githubToken }}
       owner: dhpup
       repo: kargo
@@ -226,7 +226,7 @@ spec:
   - uses: gha-wait-for-workflow
     as: wait-for-github-action
     config:
-      credentials: 
+      credentials:
         secretName: ${{ vars.githubToken }}
       owner: dhpup
       repo: kargo

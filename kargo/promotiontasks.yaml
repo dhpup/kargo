@@ -227,7 +227,8 @@ spec:
     as: wait-for-github-action
     config:
       credentials:
-        secretName: ${{ vars.githubToken }}
+        # secretName: ${{ vars.githubToken }}
+        secretName: githubToken
       owner: dhpup
       repo: kargo
       workflowId: ${{ task.outputs['dispatch-github-action'].workflowId }}

@@ -161,7 +161,7 @@ spec:
   - name: imageRepo
     value: ghcr.io/dhpup/guestbook
   - name: githubtoken
-    value: ${{ vars.githubtoken }}
+    value: githubtoken
   steps:
   # Clone the Git repository containing the Kustomize configuration to ./src
   # and checkout the target stage branch to ./out (create if it doesn't exist)

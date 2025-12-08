@@ -213,9 +213,11 @@ spec:
   - uses: gha-dispatch-workflow
     as: dispatch-github-action
     config:
-      repo: ${{ vars.gitRepo }}
-      token: ${{ vars.githubToken }}
-      workflow: example-github-action.yml
+      credentials: ${{ vars.githubToken }}
+      owner: dhpup
+      repo: kargo
+      workflowFile: example-github-action.yml
+      ref: main
       inputs:
         environment: ${{ ctx.stage }}
         version: ${{ imageFrom(vars.imageRepo).Tag }}
@@ -223,8 +225,9 @@ spec:
   - uses: gha-wait-for-workflow
     as: wait-for-github-action
     config:
-      repo: ${{ vars.gitRepo }}
-      token: ${{ vars.githubToken }}
+      credentials: ${{ vars.githubToken }}
+      owner: dhpup
+      repo: kargo
       workflowId: ${{ task.outputs['dispatch-github-action'].workflowId }}
   # Trigger ArgoCD to refresh and sync the application
   - uses: argocd-update

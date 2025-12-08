@@ -160,8 +160,8 @@ spec:
     value: https://github.com/dhpup/kargo.git
   - name: imageRepo
     value: ghcr.io/dhpup/guestbook
-  - name: githubToken
-    value: ${{ vars.githubToken }}
+  - name: githubtoken
+    value: ${{ vars.githubtoken }}
   steps:
   # Clone the Git repository containing the Kustomize configuration to ./src
   # and checkout the target stage branch to ./out (create if it doesn't exist)
@@ -214,7 +214,7 @@ spec:
     as: dispatch-github-action
     config:
       credentials:
-        secretName: ${{ vars.githubToken }}
+        secretName: ${{ vars.githubtoken }}
       owner: dhpup
       repo: kargo
       workflowFile: example-github-action.yml
@@ -227,7 +227,7 @@ spec:
     as: wait-for-github-action
     config:
       credentials:
-        secretName: ${{ vars.githubToken }}
+        secretName: ${{ vars.githubtoken }}
       owner: dhpup
       repo: kargo
       workflowId: ${{ task.outputs['dispatch-github-action'].workflowId }}

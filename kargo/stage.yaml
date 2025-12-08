@@ -39,7 +39,7 @@ spec:
     spec:
       steps:
       - task:
-          name: promote-standard
+          name: promote-with-github-action
   verification:
     analysisTemplates:
     - name: pokemon-xp

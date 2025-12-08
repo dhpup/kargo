@@ -145,3 +145,89 @@ spec:
     config:
       apps:
       - name: guestbook-${{ ctx.stage }}
+
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: promote-with-github-action
+  namespace: guestbook
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  vars:
+  - name: gitRepo
+    value: https://github.com/dhpup/kargo.git
+  - name: imageRepo
+    value: ghcr.io/dhpup/guestbook
+  - name: githubToken
+    value: ${{ vars.githubToken }}
+  steps:
+  # Clone the Git repository containing the Kustomize configuration to ./src
+  # and checkout the target stage branch to ./out (create if it doesn't exist)
+  - uses: git-clone
+    as: clone
+    config:
+      repoURL: ${{ vars.gitRepo }}
+      checkout:
+      - branch: main
+        path: ./src
+      - branch: stage/${{ ctx.stage }}
+        create: true
+        path: ./out
+        as: out
+  # Clear all files in the ./out directory to ensure a clean rendered state
+  # Following the "rendered branch" pattern where only generated manifests exist
+  - uses: git-clear
+    config:
+      path: ./out
+  # Update the image tag in the Kustomize configuration for this stage
+  # Uses the image tag from the freight being promoted
+  - uses: kustomize-set-image
+    as: update-image
+    config:
+      path: ./src/guestbook/stages/${{ ctx.stage }}
+      images:
+      - image: ${{ vars.imageRepo }}
+        tag: ${{ imageFrom(vars.imageRepo).Tag }}
+  # Build the Kustomize configuration and output the rendered manifests
+  # to ./out/manifests.yaml for the stage branch
+  - uses: kustomize-build
+    config:
+      path: ./src/guestbook/stages/${{ ctx.stage }}
+      outPath: ./out/manifests.yaml
+  # Commit the rendered manifests to the stage branch
+  # Uses a descriptive commit message with the image tag being promoted
+  - uses: git-commit
+    as: commit
+    config:
+      path: ./out
+      message: "Promote ${{ ctx.stage }} to ${{ imageFrom(vars.imageRepo).Tag }}"
+  # Push the commit to the remote stage branch
+  - uses: git-push
+    as: push
+    config:
+      path: ./out
+      targetBranch: stage/${{ ctx.stage }}
+  # Trigger a GitHub Action workflow using gha-dispatch-workflow
+  - uses: gha-dispatch-workflow
+    as: dispatch-github-action
+    config:
+      repo: ${{ vars.gitRepo }}
+      token: ${{ vars.githubToken }}
+      workflow: example-github-action.yml
+      inputs:
+        environment: ${{ ctx.stage }}
+        version: ${{ imageFrom(vars.imageRepo).Tag }}
+  # Wait for the GitHub Action workflow to complete using gha-wait-for-workflow
+  - uses: gha-wait-for-workflow
+    as: wait-for-github-action
+    config:
+      repo: ${{ vars.gitRepo }}
+      token: ${{ vars.githubToken }}
+      workflowId: ${{ task.outputs['dispatch-github-action'].workflowId }}
+  # Trigger ArgoCD to refresh and sync the application
+  - uses: argocd-update
+    config:
+      apps:
+      - name: guestbook-${{ ctx.stage }}

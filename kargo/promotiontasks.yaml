@@ -214,7 +214,8 @@ spec:
     as: dispatch-github-action
     config:
       credentials:
-        secretName: ${{ vars.githubtoken }}
+        # secretName: ${{ vars.githubtoken }}
+        secretName: githubtoken
       owner: dhpup
       repo: kargo
       workflowFile: example-github-action.yml

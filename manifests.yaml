@@ -15,7 +15,7 @@ spec:
         app: guestbook
     spec:
       containers:
-      - image: ghcr.io/dhpup/guestbook:0.1.39
+      - image: ghcr.io/dhpup/guestbook:0.1.38
         name: guestbook
         ports:
         - containerPort: 80

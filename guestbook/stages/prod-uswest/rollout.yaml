@@ -32,9 +32,8 @@ metadata:
   name: preview-guestbook
 spec:
   ports:
-    - name: https
-      port: 80
-      targetPort: https
+    - port: 80
+      targetPort: 80
   selector:
       app: guestbook
   type: ClusterIP
